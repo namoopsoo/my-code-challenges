@@ -1,24 +1,22 @@
 (ns hacker-rank-foo.core)
 
-(defn foo
-  "I don't do a whole lot."
-  [x]
-  (println x "Hello, World!"))
 
 (comment 
   (ns solution (:gen-class))
 )
  
-(ns solution (:gen-class))
  
  
 (defn find-p [m grid]
-    (or 
-        (and (= "p" (get-in grid [0 0])) [0 0])
-        (and (= "p" (get-in grid [0 (- m 1)])) [0 (- m 1)])
-        (and (= "p" (get-in grid [(- m 1) (- m 1)])) [(- m 1) (- m 1)])
-        (and (= "p" (get-in grid [(- m 1) 0])) [(- m 1) 0])
-        ))
+  ; (println "find-p, grid, " grid)
+  ; (println "grid [0 0] " (get-in grid [0 0]))
+
+  (or 
+    (and (= \p (get-in grid [0 0])) [0 0])
+    (and (= \p (get-in grid [0 (- m 1)])) [0 (- m 1)])
+    (and (= \p (get-in grid [(- m 1) (- m 1)])) [(- m 1) (- m 1)])
+    (and (= \p (get-in grid [(- m 1) 0])) [(- m 1) 0])
+    ))
 
 
 (defn get-center [m]
@@ -34,27 +32,28 @@
           y2 (last end)
           vert-distance (- y2 y1)
           horz-distance (- x2 x1) 
-          _ (println "vert-distance, " vert-distance)
-          _ (println "horz-distance, " horz-distance)
+          ;_ (println "vert-distance, " vert-distance)
+          ;_ (println "horz-distance, " horz-distance)
           vert-dir (if (pos? vert-distance)  "DOWN" "UP")
           horz-dir (if (pos? horz-distance) "RIGHT" "LEFT")
           verts (map (fn [x] vert-dir) (range (Math/abs vert-distance)))
           horzs (map (fn [x] horz-dir) (range (Math/abs horz-distance)))
           ]
-        (println "verts " verts)
-        (println "horzs " horzs)
         (concat verts horzs)))
 
 
 (defn displayPathtoPrincess [m grid]
-    (println "m " m)
-    (println "grid " grid)
+    ; (println "m " m)
+    ; (println "grid " grid)
     (let [p-coords (find-p m grid)
-          center (get-center m)]
-        (println "center " center ", p-coords " p-coords)
-        (clojure.string/join "\n" 
-          (make-path center p-coords) )
-        )
+          center (get-center m)
+          ; _ (println "center " center ", p-coords " p-coords)
+          paths (make-path center p-coords)
+          ; _ (println "paths... " paths)
+          out-str (clojure.string/join "\n" paths )
+          ]
+      out-str
+      )
     )
 
 
@@ -71,9 +70,18 @@
                                               (last coordinates)
                                               newval
                                               )))
+(defn to-vecs [seqs]
+  (vec (map #(vec %) seqs)))
 
 (defn -main []
-  (let [m (read-line)
-        grid (dorun (take m (map #(seq (.toCharArray %)) (repeatedly #(read-line)))))]
-    (displayPathtoPrincess m grid))
+  (let [m (Integer. (read-line))
+        ; _ (println "m, " m)
+        ; grid (slurp *in*) 
+        
+        grid (to-vecs
+               (doall (take m (map #(seq (.toCharArray %)) (repeatedly read-line)))))
+               ]
+    ; (println "gird... " grid)
+    (println (displayPathtoPrincess m grid)))
     )
+
