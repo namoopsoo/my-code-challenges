@@ -19,6 +19,7 @@ return a new sorted merged list from K sorted lists, each with size N.
 )
 
 (defn get-min-from-lists-heads [lists]
+  (first (sort-by (comp first first) (enumerate-those-lists lists)))
   )
   
 (defn rem-min-head [lists])
