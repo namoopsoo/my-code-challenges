@@ -72,3 +72,15 @@ conquer.core=>
 conquer.core=> (apply get-min-from-lists-heads vecs2)
 ([3 4 5 0] 1)
 ```
+```clojure
+conquer.core=> (apply rem-min-head  vecs)
+lists-vec [[1 2 3 4] [5 6 3 6] [3 4 5 0]]
+chosen i 0
+normal ones (1 2)
+lists-vec [[1 2 3 4] [5 6 3 6] [3 4 5 0]] , list chosen i  [1 2 3 4]
+removed element 1
+allbut first  (2 3 4)
+other lists ([5 6 3 6] [3 4 5 0])
+combined ((2 3 4) [5 6 3 6] [3 4 5 0])
+((2 3 4) [5 6 3 6] [3 4 5 0])
+```
