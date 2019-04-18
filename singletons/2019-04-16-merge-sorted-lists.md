@@ -33,14 +33,22 @@ return a new sorted merged list from K sorted lists, each with size N.
   "remove the smallest element from the heads of the given lists"
   (let [N (count lists)
         chosen-i (apply get-min-from-lists-heads lists)
-        normal-ones (without-i (range N) chosen-i)
+        _ (println "chosen i" chosen-i)
+        range-vec (into [] (range N))
+        normal-ones (without-i range-vec chosen-i)
+        _ (println "normal ones" normal-ones)
         removed-element (first (get lists chosen-i))
+        _ (println "removed element" removed-element)
         all-but-first (rest (get lists chosen-i))
-        
-        ]
-      ; okay 
-      (conj (map #(get lists %) normal-ones)
+        _ (println "allbut first " all-but-first)
+        other-lists (map #(get lists %) normal-ones)
+        _ (println "other lists" other-lists)
+        combined (conj other-lists
             all-but-first)
+        _ (println "combined" combined)
+        ]
+      combined
+      
   )
 )
 
