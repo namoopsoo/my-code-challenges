@@ -33,7 +33,7 @@ return a new sorted merged list from K sorted lists, each with size N.
   "remove the smallest element from the heads of the given lists"
   (let [N (count lists)
         chosen-i (apply get-min-from-lists-heads lists)
-        normal-ones (without-i (range N) i)
+        normal-ones (without-i (range N) chosen-i)
         removed-element (first (get lists chosen-i))
         all-but-first (rest (get lists chosen-i))
         
@@ -42,7 +42,6 @@ return a new sorted merged list from K sorted lists, each with size N.
       (conj (map #(get lists %) normal-ones)
             all-but-first)
   )
-
 )
 
 (defn without-i [vec i]
