@@ -13,11 +13,18 @@ return a new sorted merged list from K sorted lists, each with size N.
 ```
 ```clojure
 ; next thinking something more recursive like this
-(defn mergeit [newlist & lists]
-  (let [[lists-remove-min-though smallest] (rem-min-head lists)
-        newlist-updated (insert-tolist newlist smallest)]
-        (recur lists-remove-min-though newlist-updated))
+(defn all-empty [lists]
+
 )
+
+(defn mergeit [newlist  lists]
+  (if (reduce #(and %1 %2) lists) newlist
+    (let [[lists-remove-min-though smallest] (apply rem-min-head lists)
+          newlist-updated (conj newlist smallest)]
+          (recur newlist-updated lists-remove-min-though)))
+)
+
+
 
 (defn get-min-from-lists-heads [& lists]
   "For the given lists, whats the index of the list with the smallest element"
@@ -33,25 +40,17 @@ return a new sorted merged list from K sorted lists, each with size N.
   "remove the smallest element from the heads of the given lists"
   (let [N (count lists)
         lists-vec (into [] lists)
-        _ (println "lists-vec" lists-vec)
         chosen-i (apply get-min-from-lists-heads lists-vec)
-        _ (println "chosen i" chosen-i)
         range-vec (into [] (range N))
         normal-ones (without-i range-vec chosen-i)
-        _ (println "normal ones" normal-ones)
         list-chosen-i (get lists-vec chosen-i)
-        _ (println "lists-vec" lists-vec ", list chosen i " list-chosen-i)
         removed-element (first (get lists-vec chosen-i))
-        _ (println "removed element" removed-element)
-        all-but-first (rest (get lists-vec chosen-i))
-        _ (println "allbut first " all-but-first)
+        all-but-first (into [] (rest (get lists-vec chosen-i)))
         other-lists (map #(get lists-vec %) normal-ones)
-        _ (println "other lists" other-lists)
         combined (conj other-lists
             all-but-first)
-        _ (println "combined" combined)
         ]
-      combined
+      [combined removed-element]
   ))
 
 (defn without-i [vec i]
