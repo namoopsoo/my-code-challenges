@@ -35,4 +35,21 @@ conquer.core=> (sum-thing 0 [5 1 1 5])
 10
 conquer.core=> 
 ```
+* It looks like in this next example, it would skip the  `23`  similarly because it took the `8`. 
+```clojure
+conquer.core=> (sum-thing 0 [5 1 1 5 6 3 8 23 4 20])
+38
+```
+* But this idea is linear time however heh.  Any solution I think that sorts and finds all of the biggest numbers first , 
+would necessarily have to be at least `O(n logn)` . 
+
+#### idea 2, first find the largest numbers
+* first perhaps enumerate the indices so we know which ones we are allowed and not allowed to take.
+```clojure
+conquer.core=> (sort-by first (map #(vector [%1 %2]) [3 4 11 6] (range 4)))
+([[3 0]] [[4 1]] [[6 3]] [[11 2]])
+
+```
+
+
 
