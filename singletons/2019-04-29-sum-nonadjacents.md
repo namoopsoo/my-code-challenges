@@ -48,8 +48,44 @@ would necessarily have to be at least `O(n logn)` .
 ```clojure
 conquer.core=> (sort-by first (map #(vector [%1 %2]) [3 4 11 6] (range 4)))
 ([[3 0]] [[4 1]] [[6 3]] [[11 2]])
-
+conquer.core=> (reverse (sort-by first (map #(vector [%1 %2]) [3 4 11 6] (range 4))))
+([[11 2]] [[6 3]] [[4 1]] [[3 0]])
 ```
 
+```clojure
+; (:require [clojure.set :as cljset])
+
+
+(defn new? [position memory]
+  (= #{}
+     (cljset/intersection (set [position]) (set memory))  
+     )
+  )
+  
+(defn sorted-indexed [invec]
+  (reverse (sort-by first (map #(vector [%1 %2])
+                          invec
+                          (range (count invec))))))
+
+(defn accumulate-through-sorted-vec
+  [sorted-indexed-vec spent-indices-set accumulator-vec accumulated-sum]
+  
+  ; check if first index is in spent set. if not, add to accumulator
+  ;     and to accumulating-sum also.
+  (let [first-position (first (first sorted-indexed-vec))
+        allowed-to-use-it (new? first-position spent-indices-set)
+        ])
+  ; if input vec is empty, return the accumulated stuffs.
+  
+  )
+  
+(defn largest-sum [invec]
+  (let [sorted-indexed-vec (sorted-indexed invec)])
+    (accumulate-through-sorted-vec sorted-indexed-vec
+                                    (set [])
+                                    []
+                                    0))
+    
+```
 
 
