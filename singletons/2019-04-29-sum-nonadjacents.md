@@ -67,17 +67,37 @@ conquer.core=> (reverse (sort-by first (map #(vector [%1 %2]) [3 4 11 6] (range 
                           invec
                           (range (count invec))))))
 
+(defn adjacents [i]
+    (if (= 0 i) [1]
+        [(inc i) (dec i)]))
+
 (defn accumulate-through-sorted-vec
   [sorted-indexed-vec spent-indices-set accumulator-vec accumulated-sum]
-  
-  ; check if first index is in spent set. if not, add to accumulator
-  ;     and to accumulating-sum also.
-  (let [first-position (first (first sorted-indexed-vec))
-        allowed-to-use-it (new? first-position spent-indices-set)
-        ])
+
   ; if input vec is empty, return the accumulated stuffs.
+  (empty? sorted-indexed-vec [accumulator-vec accumulated-sum]
   
-  )
+      ; otherwise...
+  
+      ; check if first index is in spent set. if not, add to accumulator
+      ;     and to accumulating-sum also.
+      (let [first-position (first (first sorted-indexed-vec))
+            element (first (second sorted-indexed-vec))
+            allowed-to-use-it (new? first-position spent-indices-set)
+            ])
+            (if allowed-to-use-it
+                (recur (rest sorted-indexed-vec)
+                        (cljset/union spent-indices-set (set (adjacents first-position)) )
+                        (conj accumulator-vec element)
+                        (+ accumulated-sum element)))
+
+                (recur (rest sorted-indexed-vec)
+                        (cljset/union spent-indices-set (set (adjacents first-position)) )
+                        accumulator-vec
+                        accumulated-sum)
+                        )
+                    
+  ))
   
 (defn largest-sum [invec]
   (let [sorted-indexed-vec (sorted-indexed invec)])
