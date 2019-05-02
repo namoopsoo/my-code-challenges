@@ -63,7 +63,7 @@ conquer.core=> (reverse (sort-by first (map #(vector [%1 %2]) [3 4 11 6] (range 
   )
   
 (defn sorted-indexed [invec]
-  (reverse (sort-by first (map #(vector [%1 %2])
+  (reverse (sort-by first (map #(vector %1 %2)
                           invec
                           (range (count invec))))))
 
@@ -82,8 +82,8 @@ conquer.core=> (reverse (sort-by first (map #(vector [%1 %2]) [3 4 11 6] (range 
       ; otherwise...
       ; check if first index is in spent set. if not, add to accumulator
       ;     and to accumulating-sum also.
-      (let [first-position (first (first sorted-indexed-vec))
-            element (first (second sorted-indexed-vec))
+      (let [first-position (second (first sorted-indexed-vec))
+            element (first (first sorted-indexed-vec))
             allowed-to-use-it (new? first-position spent-indices-set)
             _ (println "element " element)
             _ (println "first position " first-position)
@@ -110,4 +110,27 @@ conquer.core=> (reverse (sort-by first (map #(vector [%1 %2]) [3 4 11 6] (range 
     
 ```
 
+* test run ... almost but not quite, 
+```clojure
+conquer.core=> (largest-sum [3 4 11 6] )
+"DEBUG" [([11 2] [6 3] [4 1] [3 0]) #{} [] 0]
+element  11
+first position  2
+allowed  true
+"DEBUG" [([6 3] [4 1] [3 0]) #{1 3} [11] 11]
+element  6
+first position  3
+allowed  false
+"DEBUG" [([4 1] [3 0]) #{1 4 3 2} [11] 11]
+element  4
+first position  1
+allowed  false
+"DEBUG" [([3 0]) #{0 1 4 3 2} [11] 11]
+element  3
+first position  0
+allowed  false
+"DEBUG" [() #{0 1 4 3 2} [11] 11]
+[[11] 11]
+conquer.core=> 
 
+```
