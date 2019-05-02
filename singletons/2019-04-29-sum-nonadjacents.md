@@ -134,3 +134,50 @@ allowed  false
 conquer.core=> 
 
 ```
+* This test run looks good though , since `54` shows its getting indeed the largest numbers
+```clojure
+conquer.core=> (largest-sum [5 1 1 5 6 3 8 23 4 20])
+"DEBUG" [([23 7] [20 9] [8 6] [6 4] [5 3] [5 0] [4 8] [3 5] [1 2] [1 1]) #{} [] 0]
+element  23
+first position  7
+allowed  true
+"DEBUG" [([20 9] [8 6] [6 4] [5 3] [5 0] [4 8] [3 5] [1 2] [1 1]) #{6 8} [23] 23]
+element  20
+first position  9
+allowed  true
+"DEBUG" [([8 6] [6 4] [5 3] [5 0] [4 8] [3 5] [1 2] [1 1]) #{6 10 8} [23 20] 43]
+element  8
+first position  6
+allowed  false
+"DEBUG" [([6 4] [5 3] [5 0] [4 8] [3 5] [1 2] [1 1]) #{7 6 5 10 8} [23 20] 43]
+element  6
+first position  4
+allowed  true
+"DEBUG" [([5 3] [5 0] [4 8] [3 5] [1 2] [1 1]) #{7 6 3 5 10 8} [23 20 6] 49]
+element  5
+first position  3
+allowed  false
+"DEBUG" [([5 0] [4 8] [3 5] [1 2] [1 1]) #{7 4 6 3 2 5 10 8} [23 20 6] 49]
+element  5
+first position  0
+allowed  true
+"DEBUG" [([4 8] [3 5] [1 2] [1 1]) #{7 1 4 6 3 2 5 10 8} [23 20 6 5] 54]
+element  4
+first position  8
+allowed  false
+"DEBUG" [([3 5] [1 2] [1 1]) #{7 1 4 6 3 2 9 5 10 8} [23 20 6 5] 54]
+element  3
+first position  5
+allowed  false
+"DEBUG" [([1 2] [1 1]) #{7 1 4 6 3 2 9 5 10 8} [23 20 6 5] 54]
+element  1
+first position  2
+allowed  false
+"DEBUG" [([1 1]) #{7 1 4 6 3 2 9 5 10 8} [23 20 6 5] 54]
+element  1
+first position  1
+allowed  false
+"DEBUG" [() #{0 7 1 4 6 3 2 9 5 10 8} [23 20 6 5] 54]
+[[23 20 6 5] 54]
+conquer.core=> 
+```
