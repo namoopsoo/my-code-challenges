@@ -27,37 +27,89 @@ Count nodes in a binary tree
             })
 
 (defn print-tree-breadth [tree]
-  (prn "i am " (get tree :id) :d (get tree :d)) 
-  (print :l (get-in tree [:l :id]) " ")
-  (print :r (get-in tree [:r :id]) " ")
-  (if (not (nil? (get tree :l)))
-      (print-tree-breadth (get tree :l)))
-  (if (not (nil? (get tree :r)))
-      (print-tree-breadth (get tree :r))))
+  (when-not (nil? (get tree :id))
+      (prn "i am " (get tree :id))
+      (print-tree-breadth (get tree :l))
+      (print-tree-breadth (get tree :r))
+      ))
+  
 ```
-* not quite there yet...
+* this is what the traversal looks like 
 ```clojure
 conquer.core=> (print-tree-breadth tree)
-"i am " 1 :d 0
-:l 2  :r 7  "i am " 2 :d 1
-:l 3  :r 5  "i am " 3 :d 2
-:l 4  :r nil  "i am " 4 :d 3
-:l nil  :r nil  "i am " 5 :d 2
-:l nil  :r 6  "i am " 6 :d 3
-:l nil  :r nil  "i am " 7 :d 1
-:l 8  :r 15  "i am " 8 :d 2
-:l 9  :r nil  "i am " 9 :d 3
-:l nil  :r 10  "i am " 10 :d 4
-:l 11  :r 13  "i am " 11 :d 5
-:l nil  :r 12  "i am " 12 :d 6
-:l nil  :r nil  "i am " 13 :d 5
-:l 14  :r nil  "i am " 14 :d 6
-:l nil  :r nil  "i am " 15 :d 2
-:l 16  :r nil  "i am " 16 :d 3
-:l 17  :r 18  "i am " 17 :d 4
-:l nil  :r nil  "i am " 18 :d 4
-:l 19  :r nil  "i am " 19 :d 5
-:l nil  :r 20  "i am " 20 :d 6
-:l nil  :r nil  nil
+"i am " 1
+"i am " 2
+"i am " 3
+"i am " 4
+"i am " 5
+"i am " 6
+"i am " 7
+"i am " 8
+"i am " 9
+"i am " 10
+"i am " 11
+"i am " 12
+"i am " 13
+"i am " 14
+"i am " 15
+"i am " 16
+"i am " 17
+"i am " 18
+"i am " 19
+"i am " 20
+nil
+
 ```
+* But it's hard to verify since heh I would need an alternate way to validate it is doing the right thing...
+```clojure
+(defn make-graphviz-tree-breadth [tree]
+  (when-not (nil? (get tree :id))
+      (when-not (nil? (get tree :l)) (println (get tree :id) " -> " (get-in tree [:l :id]) ";"))
+      (when-not (nil? (get tree :r)) (println (get tree :id) " -> " (get-in tree [:r :id]) ";"))
+      
+      (make-graphviz-tree-breadth (get tree :l))
+      (make-graphviz-tree-breadth (get tree :r))
+      ))
+
+```
+```clojure
+conquer.core=> (make-graphviz-tree-breadth tree)
+1  ->  2 ;
+1  ->  7 ;
+2  ->  3 ;
+2  ->  5 ;
+3  ->  4 ;
+5  ->  6 ;
+7  ->  8 ;
+7  ->  15 ;
+8  ->  9 ;
+9  ->  10 ;
+10  ->  11 ;
+10  ->  13 ;
+11  ->  12 ;
+13  ->  14 ;
+15  ->  16 ;
+16  ->  17 ;
+16  ->  18 ;
+18  ->  19 ;
+19  ->  20 ;
+nil
+conquer.core=>
+
+```
+* making a graph from this now...
+```dot
+#   2019-05-08--tree.dot
+digraph G { 1  ->  2 ; 1  ->  7 ; 2  ->  3 ; 2  ->  5 ; 3  ->  4 ; 5  ->  6 ; 7  ->  8 ; 7  ->  15 ; 8  ->  9 ; 9  ->  10 ; 10  ->  11 ; 10  ->  13 ; 11  ->  12 ; 13  ->  14 ; 15  ->  16 ; 16  ->  17 ; 16  ->  18 ; 18  ->  19 ; 19  ->  20 ; }
+```
+```bash
+$  dot -Tpng -O  2019-05-08--tree.dot
+# => produces this ...below  2019-05-08--tree.dot.png
+
+```
+* => 
+<img src="https://github.com/namoopsoo/my-code-challenges/blob/master/assets/2019-05-08--tree.dot.png"
+width="233" height="182">
+
+
 
