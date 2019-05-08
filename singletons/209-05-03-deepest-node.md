@@ -168,17 +168,86 @@ nil
 * How about, _If i'm nil, return 0, otherwise rurn 1 plus the counts of my children_... 
 ```clojure
 (defn count-nodes-2 [tree]
+
   (if (nil? (get tree :id))
       0
-      (do (println "me: " (get tree :id))
+      (do (println "mee: " (get tree :id))
 
            (+ 1
-             (count-nodes (get tree :l))
-             (count-nodes (get tree :r)))
+             (count-nodes-2 (get tree :l))
+             (count-nodes-2 (get tree :r)))
       )))
   
   
+conquer.core=> (count-nodes-2 tree)
+mee:  1
+mee:  2
+mee:  3
+mee:  4
+mee:  5
+mee:  6
+mee:  7
+mee:  8
+mee:  9
+mee:  10
+mee:  11
+mee:  12
+mee:  13
+mee:  14
+mee:  15
+mee:  16
+mee:  17
+mee:  18
+mee:  19
+mee:  20
+20
   
+```
+* Ok cool. 
+
+### Variant Question...
+* What is the deepest node?
+
+#### I think we can just use an accumulating total and return the nodes with deepest totals..
+* Or at least that sounds good out loud hah...
+```clojure
+(defn find-deepest-node [tree current-depth]
+  ; if i have no children, return my current total..
+  (if (and 
+          (nil? (get tree :l))
+          (nil? (get tree :r)))
+       {:me (get tree :id)
+        :my-depth current-depth}
+        
+       ; otherwise... max of ...
+       (let [next-depth (+ 1 current-depth)]
+             (apply max-key :my-depth
+                            (for [x [:l :r]] 
+                                 (find-deepest-node (get tree x)
+                                        next-depth)))
+                ) 
+       )    
+  )
+
+
+conquer.core=> (find-deepest-node tree 0)
+{:me 20, :my-depth 6}
+
+```
+* Cool. looks good
+
+### One more variant Question... traverse tree with breadth first instead..
+
+#### okie dokie...
+```clojure
+(defn print-tree-breadth [tree out-buffer next-queue visited-set]
+
+  ; remove from queue: append to output-vector
+
+)
+
+
+
 ```
 
 
