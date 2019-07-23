@@ -1,0 +1,29 @@
+
+
+#### Question
+Given a list of numbers, if all numbers except one appear more than once, which one appears just once?
+   
+
+```python         
+def one(nums):    
+    noset = set()
+    seen_set = set()
+    for _, x in enumerate(nums):
+        if x in seen_set:
+            noset.add(x)
+        else:
+            seen_set.add(x)
+
+    return list(seen_set - noset)[0]
+
+def two(nums):    
+    allset = set(nums)
+    noset = set()
+    for _, x in enumerate(nums):
+        if x in allset:
+            allset.remove(x)
+        else:
+            noset.add(x)
+
+    return list(set(nums) - set(noset))[0]
+```
